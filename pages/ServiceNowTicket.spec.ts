@@ -1,11 +1,13 @@
 import { Page } from '@playwright/test';
 import { LoginPage } from './Login.spec';
 import testData from '../testdata/testData.json';
+import { LogoutPage } from './Logout.spec';
 
 export class ServiceNowTicketPage {
   constructor(private page: Page) {}  
     async createServiceNowTicket() {
         const loginPage = new LoginPage(this.page);
+        const logoutPage = new LogoutPage(this.page);
         await loginPage.login(testData.username, testData.password);
         await this.page.locator("//span[contains(text(),'ServiceNow Tickets')]").click();
         await this.page.locator("//h2[contains(text(),'Open Tickets')]").click();
@@ -30,7 +32,9 @@ export class ServiceNowTicketPage {
         
         await this.page.locator("//span[contains(text(),'Add Self')]").click();
         await this.page.locator("//span[contains(text(),' Submit')]").click();
+        await logoutPage.logout();
         await this.page.pause();
+
        
 
 }
